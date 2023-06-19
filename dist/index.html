@@ -7,6 +7,40 @@
   <title>Todo List</title>
 </head>
 <body>
+  <form class="add-todo-form">
+    <div>
+      <label for="title">Title:</label>
+      <input id="title" name="title" type="text">
+    </div>
+    <div>
+      <label for="description">Description:</label>
+      <textarea id="description" name="description"></textarea>
+    </div>
+    <div>
+      <label for="due-date">Due date:</label>
+      <input id="due-date" name="due-date" type="date">
+    </div>
+    <div class="priority-select">
+      <span>Select priority:</span>
+      <input name="priority" id="low-priority" type="radio">
+      <label for="low-priority">Low</label>
+      <input name="priority" id="mid-priority" type="radio">
+      <label for="mid-priority">Mid</label>
+      <input name="priority" id="high-priority" type="radio">
+      <label for="high-priority">High</label>
+    </div>
+    <div>
+      <label for="project">Project:</label>
+      <input id="project" name="project" type="text">
+    </div>
+    <div class="is-completed-checkbox">
+      <input id="is-completed" name="isCompleted" type="checkbox">
+      <label for="is-completed">Is completed?</label>
+    </div>
+    <button>Add Task</button>
+  </form>
+  <div class="projects"></div>
+  <div class="todos"></div>
   <script src="main.js"></script>
 </body>
 </html>

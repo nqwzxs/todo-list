@@ -1,17 +1,22 @@
 class Todo {
-  constructor(title, description, dueDate, priority, project, isCompleted) {
+  constructor(title, description, dueDate, priority, isCompleted) {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
     this.priority = priority;
-    this.project = project;
     this.isCompleted = isCompleted;
   }
 }
 
 class Project {
+  todos = []
+  
   constructor(name) {
     this.name = name;
+  }
+
+  addTodo(todo) {
+    this.todos.push(todo);
   }
 }
 
@@ -23,11 +28,15 @@ window.createProject = function(name) {
   projects.push(new Project(name));
 }
 
-window.createTodo = function(title, description, dueDate, priority, project, isCompleted) {
-  if (selectedProject) project = selectedProject;
-  
-  const todo = new Todo(title, description, dueDate, priority, project, isCompleted);
-  todos.push(todo);
+window.deleteProject = function(project) {
+  const index = projects.indexOf(project);
+  projects.splice(index, 1);
+}
+
+window.createTodo = function(title, description, dueDate, priority, isCompleted) {
+  const todo = new Todo(title, description, dueDate, priority, isCompleted);
+
+  selectedProject ? selectedProject.addTodo(todo) : todos.push(todo);
 }
 
 window.selectProject = function(name) {
@@ -50,13 +59,10 @@ addTodoForm.addEventListener('submit', e => {
   const priorities = document.getElementsByName('priority');
   let priority = Array.from(priorities).find(radio => radio.checked);
 
-  let project = document.getElementById('project');
-  let isCompleted = document.getElementById('is-completed');
-
-  createTodo(title.value, description.value, dueDate.value, priority.value, project.value, isCompleted.checked);
+  createTodo(title.value, description.value, dueDate.value, priority.value);
 });
 
-window.createTodoCard = function (todo) {
+window.createTodoCard = function(todo) {
   const todoCard = document.createElement('div');
 
   const title = document.createElement('div');
@@ -70,7 +76,7 @@ window.createTodoCard = function (todo) {
   return todoCard;
 }
 
-window.updateTodosGrid = function () {
+window.updateTodosGrid = function() {
   window.todosGrid = document.querySelector('.todos-grid');
 
   todos.forEach(todo => {
@@ -82,10 +88,11 @@ window.updateTodosGrid = function () {
 window.createProjectButton = function(project) {
   const projectButton = document.createElement('button');
   projectButton.textContent = project.name;
+
   return projectButton;
 }
 
-window.updateProjectsList = function () {
+window.updateProjectsList = function() {
   window.projectsList = document.querySelector('.projects-list');
 
   projects.forEach(project => {
@@ -93,3 +100,4 @@ window.updateProjectsList = function () {
     projectsList.appendChild(projectButton);
   });
 }
+

@@ -1,52 +1,3 @@
-class Todo {
-  constructor(title, description, dueDate, priority, isCompleted) {
-    this.title = title;
-    this.description = description;
-    this.dueDate = dueDate;
-    this.priority = priority;
-    this.isCompleted = isCompleted;
-  }
-}
-
-class Project {
-  todos = []
-  
-  constructor(name) {
-    this.name = name;
-  }
-
-  addTodo(todo) {
-    this.todos.push(todo);
-  }
-}
-
-window.todos = [];
-window.projects = [];
-window.selectedProject = null;
-
-window.createProject = function(name) {
-  projects.push(new Project(name));
-}
-
-window.deleteProject = function(project) {
-  const index = projects.indexOf(project);
-  projects.splice(index, 1);
-}
-
-window.createTodo = function(title, description, dueDate, priority, isCompleted) {
-  const todo = new Todo(title, description, dueDate, priority, isCompleted);
-
-  selectedProject ? selectedProject.addTodo(todo) : todos.push(todo);
-}
-
-window.selectProject = function(name) {
-  selectedProject = projects.find(el => el.name === name);
-}
-
-window.deselectProject = function() {
-  selectedProject = null;
-}
-
 window.addTodoForm = document.querySelector('.add-todo-form');
 
 addTodoForm.addEventListener('submit', e => {
@@ -76,12 +27,12 @@ window.createTodoCard = function(todo) {
   return todoCard;
 }
 
-window.updateTodosGrid = function() {
-  window.todosGrid = document.querySelector('.todos-grid');
+window.updateTodosList = function() {
+  window.todosList = document.querySelector('.todos-list');
 
   todos.forEach(todo => {
     const todoCard = createTodoCard(todo);
-    todosGrid.appendChild(todoCard);
+    todosList.appendChild(todoCard);
   });
 }
 
@@ -100,4 +51,3 @@ window.updateProjectsList = function() {
     projectsList.appendChild(projectButton);
   });
 }
-

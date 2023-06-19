@@ -1,0 +1,222 @@
+:root {
+  font-size: 16px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+body {
+  background: #020617;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wrapper {
+  background: #0f172a;
+  border-radius: 1rem;
+  padding: 2rem;
+  width: 1200px;
+  height: 800px;
+  display: grid;
+  grid-template: min-content 2fr / 1fr 2fr;
+  gap: 2rem;
+}
+
+.menu {
+  background: #1e293b;
+  border-radius: 1rem;
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.2rem;
+  padding: 1rem 2rem;
+  border: none;
+  color: white;
+  background: none;
+  transition: all 0.1s;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: #334155;
+}
+
+.projects-list {
+  grid-column: 2 / 1;
+  background: #1e293b;
+  border-radius: 1rem;
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.todos-list {
+  display: flex;
+  flex-direction: column;
+  grid-row: 1 / -1;
+  grid-column: 2 / -1;
+  padding: 1rem 0;
+}
+
+.selected-button {
+  background: #334155;
+}
+
+.add-todo-form {
+  color: white;
+  width: 700px;
+  height: 700px;
+  border-radius: 1rem;
+  background: #0f172a;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  visibility: hidden;
+}
+
+.add-todo-form #title {
+  color: white;
+  width: 100%;
+  padding: 2rem;
+  font-size: 2rem;
+  background: none;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #334155;
+}
+
+.add-todo-form #title::placeholder {
+  color: #334155;
+}
+
+.add-todo-form #description {
+  flex: 1;
+  color: white;
+  padding: 1rem 2rem;
+  width: 100%;
+  font-size: 2rem;
+  background: none;
+  outline: none;
+  border: none;
+  resize: none;
+  border-bottom: 1px solid #334155;
+}
+
+.add-todo-form #description::placeholder {
+  color: #334155;
+}
+
+.add-todo-form .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+}
+
+.add-todo-form .due-date-container {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+.add-todo-form #due-date {
+  color: white;
+  padding: 1rem;
+  border-radius: 1rem;
+  font-size: 1rem;
+  background: #1e293b;
+  outline: none;
+  border: none;
+}
+
+.add-todo-form #due-date:hover {
+  background: #334155;
+}
+
+.add-todo-form .priority-container {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.add-todo-form .priority-container .priorities {
+  display: flex;
+}
+
+.add-todo-form .priority-container .priorities input {
+  display: none;
+}
+
+.add-todo-form .priority-container .priorities label {
+  color: white;
+  padding: 1rem;
+  font-size: 1rem;
+  background: #1e293b;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.add-todo-form .priority-container .priorities label:first-of-type {
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+
+.add-todo-form .priority-container .priorities label:last-of-type {
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+.add-todo-form .priority-container .priorities input:checked+label {
+  background: #334155;
+}
+
+.add-todo-form .priority-container .priorities label:hover {
+  background: #334155;
+}
+
+.add-todo-form button {
+  background: #1e293b;
+  justify-content: center;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  background: rgb(0, 0, 0, 0.5);
+  visibility: hidden;
+}
+
+.active {
+  visibility: visible;
+}

@@ -5,36 +5,76 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Todo List</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
+  <div class="wrapper">
+    <div class="menu">
+      <button class="inbox button selected-button">
+        <span class="material-icons">
+          inbox
+        </span>
+        Inbox
+      </button>
+      <button class="today button">
+        <span class="material-icons">
+          today
+        </span>
+        Today
+      </button>
+      <button class="this-week button">
+        <span class="material-icons">
+          date_range
+        </span>
+        This Week
+      </button>
+    </div>
+    <div class="projects-list">
+      <button class="add-project-button button">
+        <span class="material-icons">
+          add
+        </span>
+        Add Project
+      </button>
+    </div>
+    <div class="todos-list">
+      <button class="add-todo-button button">
+        <span class="material-icons">
+          add
+        </span>
+        Add Todo
+      </button>
+    </div>
+  </div>
+
   <form class="add-todo-form">
-    <div>
-      <label for="title">Title:</label>
-      <input id="title" name="title" type="text">
+    <input id="title" name="title" type="text" placeholder="Title e.g. wash dishes, do homework...">
+    <textarea id="description" name="description" placeholder="Description e.g. location, list, phone number..."></textarea>
+    <div class="container">
+      <div class="due-date-container">
+        <label for="due-date">Due date:</label>
+        <input type="date" id="due-date" name="dueDate">
+      </div>
+      <div class="priority-container">
+        <span>Priority:</span>
+        <div class="priorities">
+          <input name="priority" id="no-priority" value="none" type="radio" checked>
+          <label for="no-priority">None</label>
+          <input name="priority" id="low-priority" value="low" type="radio">
+          <label for="low-priority">Low</label>
+          <input name="priority" id="mid-priority" value="mid" type="radio">
+          <label for="mid-priority">Mid</label>
+          <input name="priority" id="high-priority" value="high" type="radio">
+          <label for="high-priority">High</label>
+        </div>
+      </div>
     </div>
-    <div>
-      <label for="description">Description:</label>
-      <textarea id="description" name="description"></textarea>
-    </div>
-    <div>
-      <label for="due-date">Due date:</label>
-      <input id="due-date" name="dueDate" type="date">
-    </div>
-    <div class="priority-select">
-      <span>Select priority:</span>
-      <input name="priority" id="no-priority" value="none" type="radio" checked>
-      <label for="no-priority">None</label>
-      <input name="priority" id="low-priority" value="low" type="radio">
-      <label for="low-priority">Low</label>
-      <input name="priority" id="mid-priority" value="mid" type="radio">
-      <label for="mid-priority">Mid</label>
-      <input name="priority" id="high-priority" value="high" type="radio">
-      <label for="high-priority">High</label>
-    </div>
-    <button type="submit">Add Task</button>
+    <button class="button" type="submit">Add Todo</button>
   </form>
-  <div class="projects-list"></div>
-  <div class="todos-grid"></div>
+
+  <div class="overlay"></div>
+
   <script src="main.js"></script>
 </body>
 </html>

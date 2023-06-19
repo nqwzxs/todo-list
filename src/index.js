@@ -56,8 +56,6 @@ addTodoForm.addEventListener('submit', e => {
   createTodo(title.value, description.value, dueDate.value, priority.value, project.value, isCompleted.checked);
 });
 
-window.todosGrid = document.querySelector('.todos-grid');
-
 window.createTodoCard = function (todo) {
   const todoCard = document.createElement('div');
 
@@ -72,9 +70,26 @@ window.createTodoCard = function (todo) {
   return todoCard;
 }
 
-window.updateTodosGrid = function() {
+window.updateTodosGrid = function () {
+  window.todosGrid = document.querySelector('.todos-grid');
+
   todos.forEach(todo => {
     const todoCard = createTodoCard(todo);
     todosGrid.appendChild(todoCard);
+  });
+}
+
+window.createProjectButton = function(project) {
+  const projectButton = document.createElement('button');
+  projectButton.textContent = project.name;
+  return projectButton;
+}
+
+window.updateProjectsList = function () {
+  window.projectsList = document.querySelector('.projects-list');
+
+  projects.forEach(project => {
+    const projectButton = createProjectButton(project);
+    projectsList.appendChild(projectButton);
   });
 }

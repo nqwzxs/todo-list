@@ -18,15 +18,17 @@
     </div>
     <div>
       <label for="due-date">Due date:</label>
-      <input id="due-date" name="due-date" type="date">
+      <input id="due-date" name="dueDate" type="date">
     </div>
     <div class="priority-select">
       <span>Select priority:</span>
-      <input name="priority" id="low-priority" type="radio">
+      <input name="priority" id="no-priority" type="radio" checked>
+      <label for="no-priority">None</label>
+      <input name="priority" id="low-priority" value="low" type="radio">
       <label for="low-priority">Low</label>
-      <input name="priority" id="mid-priority" type="radio">
+      <input name="priority" id="mid-priority" value="mid" type="radio">
       <label for="mid-priority">Mid</label>
-      <input name="priority" id="high-priority" type="radio">
+      <input name="priority" id="high-priority" value="high" type="radio">
       <label for="high-priority">High</label>
     </div>
     <div>
@@ -37,10 +39,10 @@
       <input id="is-completed" name="isCompleted" type="checkbox">
       <label for="is-completed">Is completed?</label>
     </div>
-    <button>Add Task</button>
+    <button type="submit">Add Task</button>
   </form>
   <div class="projects"></div>
-  <div class="todos"></div>
+  <div class="todos-grid"></div>
   <script src="main.js"></script>
 </body>
 </html>

@@ -1,28 +1,31 @@
-class TodoList {
-  todos = [];
-  projects = [];
-  selectedProject = null;
+import Todo from './Todo';
+import Project from './Project';
 
-  createProject(name) {
-    projects.push(new Project(name));
+export default class TodoList {
+  static todos = [];
+  static projects = [];
+  static selectedProject = null;
+
+  static createProject(name) {
+    TodoList.projects.push(new Project(name));
   }
 
-  deleteProject(project) {
-    const index = projects.indexOf(project);
-    projects.splice(index, 1);
+  static deleteProject(project) {
+    const index = TodoList.projects.indexOf(project);
+    TodoList.projects.splice(index, 1);
   }
 
-  createTodo(title, description, dueDate, priority, isCompleted) {
+  static createTodo(title, description, dueDate, priority, isCompleted) {
     const todo = new Todo(title, description, dueDate, priority, isCompleted);
 
-    selectedProject ? selectedProject.addTodo(todo) : todos.push(todo);
+    TodoList.selectedProject ? TodoList.selectedProject.addTodo(todo) : TodoList.todos.push(todo);
   }
 
-  selectProject(name) {
-    selectedProject = projects.find(el => el.name === name);
+  static selectProject(name) {
+    TodoList.selectedProject = TodoList.projects.find(el => el.name === name);
   }
 
-  deselectProject() {
-    selectedProject = null;
+  static deselectProject() {
+    TodoList.selectedProject = null;
   }
 }

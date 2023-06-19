@@ -1,4 +1,4 @@
-class Project {
+export default class Project {
   todos = []
   
   constructor(name) {

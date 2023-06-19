@@ -20,20 +20,28 @@ class Project {
   }
 }
 
+window.todos = [];
 window.projects = [];
-
-window.createDefaultProject = function() {
-  projects.push(new Project('default'));
-}
+window.selectedProject = null;
 
 window.createProject = function(name) {
   projects.push(new Project(name));
 }
 
-window.createTodo = function(title, description, dueDate, priority, project) {
-  const todo = new Todo(title, description, dueDate, priority);
-  const selectedProject = projects.find(el => el.name === project);
-  selectedProject.addTodo(todo);
+window.createTodo = function(title, description, dueDate, priority) {
+  const todo = Todo(title, description, dueDate, priority);
+
+  if (selectedProject) {
+    selectedProject.addTodo(todo);
+  } else {
+    todos.push(todo);
+  }
 }
 
-createDefaultProject();
+window.selectProject = function(name) {
+  selectedProject = projects.find(el => el.name === name);
+}
+
+window.deselectProject = function() {
+  selectedProject = null;
+}

@@ -1,1 +1,1 @@
-import DOMController from './DOMController';
+import UserInterface from './modules/UserInterface';

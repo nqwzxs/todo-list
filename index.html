@@ -11,7 +11,7 @@
 <body>
   <div class="wrapper">
     <div class="menu">
-      <button class="inbox button selected-button">
+      <button class="inbox button selected">
         <span class="material-icons">
           inbox
         </span>
@@ -48,7 +48,7 @@
     </div>
   </div>
 
-  <form class="add-todo-form">
+  <form class="todo-form">
     <input id="title" name="title" type="text" placeholder="Title e.g. wash dishes, do homework..." required>
     <textarea id="description" name="description" placeholder="Description e.g. location, list, phone number..."></textarea>
     <div class="container">
@@ -70,7 +70,12 @@
         </div>
       </div>
     </div>
-    <button class="button" type="submit">Add Todo</button>
+    <button class="button" type="submit"></button>
+  </form>
+
+  <form class="project-form">
+    <input id="name" name="name" type="text" placeholder="Project name e.g. school, web development..." required autocomplete="off">
+    <button class="button" type="submit"></button>
   </form>
 
   <div class="overlay"></div>

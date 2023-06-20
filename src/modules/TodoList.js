@@ -21,6 +21,19 @@ export default class TodoList {
     TodoList.selectedProject ? TodoList.selectedProject.addTodo(todo) : TodoList.todos.push(todo);
   }
 
+  static deleteTodo(todo) {
+    let todos;
+
+    if (this.selectedProject) {
+      todos = this.selectedProject.todos;
+    } else {
+      todos = this.todos;
+    }
+
+    const index = todos.indexOf(todo);
+    todos.splice(index, 1);
+  }
+
   static selectProject(name) {
     TodoList.selectedProject = TodoList.projects.find(el => el.name === name);
   }

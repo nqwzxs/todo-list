@@ -1,6 +1,4 @@
 export default class Todo {
-  isCompleted = false;
-
   constructor(title, description, dueDate, priority) {
     this.title = title;
     this.description = description;

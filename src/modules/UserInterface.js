@@ -2,17 +2,38 @@ import TodoList from './TodoList';
 
 export default class UserInterface {
   static inbox = document.querySelector('.menu .inbox')
+  static today = document.querySelector('.menu .today')
+  static thisWeek = document.querySelector('.menu .this-week')
 
-  static currentPage = this.inbox;
+  static currentPage = this.inbox
   static todoBeingEdited = null
+  static projectBeingEdited = null
   
   static {
-
+    this.handleSelectInboxEvent();
     this.handleAddTodoButton();
     this.handleAddProjectButton();
     this.handleTodoFormEvent();
     this.handleProjectFormEvent();
     this.handleOverlayEvent();
+  }
+
+  static handleSelectInboxEvent() {
+    this.inbox.addEventListener('click', e => {
+      this.currentPage = this.inbox;
+      TodoList.selectedProject = null;
+      this.updateTodosList();
+      this.highlightCurrentPage();  
+    });
+  }
+
+  static handleSelectTodayEvent() {
+    this.today.addEventListener('click', e => {
+      this.currentPage = this.today;
+      TodoList.selectedProject = null;
+      this.updateTodosList();
+      this.highlightCurrentPage();  
+    });
   }
   
   static handleAddTodoButton() {
@@ -52,8 +73,14 @@ export default class UserInterface {
       e.preventDefault();
   
       const name = document.getElementById('name');
-  
-      TodoList.createProject(name.value);
+
+      if (this.projectBeingEdited) {
+        this.projectBeingEdited.name = name.value;
+      } else {
+        TodoList.createProject(name.value);
+      }
+
+      this.projectBeingEdited = null;
 
       this.toggleProjectForm();
       this.clearProjectForm();
@@ -95,8 +122,12 @@ export default class UserInterface {
     const overlay = document.querySelector('.overlay');
 
     overlay.addEventListener('click', e => {
+      this.projectBeingEdited = null;
       this.todoBeingEdited = null;
+
+      this.clearProjectForm();
       this.clearTodoForm();
+
       const todoForm = document.querySelector('.todo-form');
       const projectForm = document.querySelector('.project-form');
       todoForm.classList.contains('active') ? this.toggleTodoForm() : this.toggleProjectForm();
@@ -135,10 +166,11 @@ export default class UserInterface {
     const leftContainer = document.createElement('span');
     leftContainer.classList.add('left-container');
 
-    const icon = document.createElement('span');
-    icon.classList.add('material-icons');
-    icon.textContent = 'radio_button_unchecked';
-    leftContainer.appendChild(icon);
+    const checkIcon = document.createElement('span');
+    checkIcon.classList.add('material-icons');
+    checkIcon.classList.add('check-todo-button');
+    checkIcon.textContent = 'radio_button_unchecked';
+    leftContainer.appendChild(checkIcon);
 
     const title = document.createElement('span');
     title.textContent = todo.title;
@@ -165,6 +197,16 @@ export default class UserInterface {
       todosList.removeChild(card);
     })
 
+    if (this.currentPage === this.today) {
+      let selectedTodos = TodoList.todos;
+
+      TodoList.projects.forEach(project => {
+        selectedTodos = + project.todos;
+      });
+    } else if (TodoList.selectedProject) {
+      
+    }
+
     const selectedTodos = TodoList.selectedProject ? TodoList.selectedProject.todos : TodoList.todos
 
     selectedTodos.forEach(todo => {
@@ -178,6 +220,14 @@ export default class UserInterface {
         this.clearTodoForm();
         this.addTodoValuesToForm(todo);
         this.toggleTodoForm();
+      });
+
+      const checkTodo = todoCard.firstChild.firstChild;
+
+      checkTodo.addEventListener('click', e => {
+        TodoList.deleteTodo(todo);
+        this.updateTodosList();
+        e.stopPropagation();
       });
 
       const addTodoButton = document.querySelector('.add-todo-button');
@@ -251,11 +301,40 @@ export default class UserInterface {
         this.updateTodosList();
         this.highlightCurrentPage();  
       });
+
+      const editProject = projectDiv.lastChild.firstChild;
+
+      editProject.addEventListener('click', e => {
+        const button = document.querySelector('.project-form button');
+        button.textContent = 'Save';
+
+        this.projectBeingEdited = project;
+        this.clearProjectForm();
+        this.addProjectValuesToForm(project);
+        this.toggleProjectForm();
+      });
+
+      const deleteProject = projectDiv.lastChild.lastChild;
+
+      deleteProject.addEventListener('click', e => {
+        TodoList.deselectProject(project);
+        TodoList.deleteProject(project);
+        this.currentPage = this.inbox;
+        this.highlightCurrentPage();
+        this.updateProjectsList();
+        this.updateTodosList();
+        e.stopPropagation();
+      });
       
       this.highlightCurrentPage();
       const addProjectButton = document.querySelector('.add-project-button');
       projectsList.insertBefore(projectDiv, addProjectButton);
     });
+  }
+
+  static addProjectValuesToForm(project) {
+    const name = document.getElementById('name');
+    name.value = project.name;
   }
 
   static highlightCurrentPage() {

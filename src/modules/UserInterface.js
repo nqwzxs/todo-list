@@ -11,6 +11,7 @@ export default class UserInterface {
   
   static {
     this.handleSelectInboxEvent();
+    this.handleSelectTodayEvent();
     this.handleAddTodoButton();
     this.handleAddProjectButton();
     this.handleTodoFormEvent();
@@ -196,18 +197,25 @@ export default class UserInterface {
     todoCards.forEach(card => {
       todosList.removeChild(card);
     })
+    
+    let selectedTodos = [];
 
     if (this.currentPage === this.today) {
-      let selectedTodos = TodoList.todos;
+      selectedTodos = selectedTodos.concat(TodoList.todos);
 
       TodoList.projects.forEach(project => {
-        selectedTodos = + project.todos;
+        selectedTodos = selectedTodos.concat(project.todos);
       });
-    } else if (TodoList.selectedProject) {
-      
-    }
 
-    const selectedTodos = TodoList.selectedProject ? TodoList.selectedProject.todos : TodoList.todos
+      const todayDate = new Date();
+      const todayString = todayDate.toISOString().slice(0, 10);
+
+      selectedTodos = selectedTodos.filter(todo => todo.dueDate === todayString);
+    } else if (TodoList.selectedProject) {
+      selectedTodos = TodoList.selectedProject.todos;
+    } else {
+      selectedTodos = TodoList.todos;
+    }
 
     selectedTodos.forEach(todo => {
       const todoCard = this.createTodoCard(todo);

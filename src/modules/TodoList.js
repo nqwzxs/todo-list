@@ -1,24 +1,24 @@
 import Todo from './Todo';
 import Project from './Project';
+import Storage from './Storage';
 
 export default class TodoList {
-  static todos = [];
-  static projects = [];
-  static selectedProject = null;
+  static selectedProject = null
 
   static createProject(name) {
-    TodoList.projects.push(new Project(name));
+    Storage.projects.push(new Project(name));
   }
 
   static deleteProject(project) {
-    const index = TodoList.projects.indexOf(project);
-    TodoList.projects.splice(index, 1);
+    const index = Storage.projects.indexOf(project);
+    Storage.projects.splice(index, 1);
   }
 
-  static createTodo(title, description, dueDate, priority, isCompleted) {
-    const todo = new Todo(title, description, dueDate, priority, isCompleted);
+  static createTodo(title, description, dueDate, priority) {
+    const todo = new Todo(title, description, dueDate, priority);
+    const project = TodoList.selectedProject;
 
-    TodoList.selectedProject ? TodoList.selectedProject.addTodo(todo) : TodoList.todos.push(todo);
+    project ? project.addTodo(todo) : Storage.todos.push(todo);
   }
 
   static deleteTodo(todo) {
@@ -27,7 +27,7 @@ export default class TodoList {
     if (this.selectedProject) {
       todos = this.selectedProject.todos;
     } else {
-      todos = this.todos;
+      todos = Storage.todos;
     }
 
     const index = todos.indexOf(todo);
@@ -35,7 +35,7 @@ export default class TodoList {
   }
 
   static selectProject(name) {
-    TodoList.selectedProject = TodoList.projects.find(el => el.name === name);
+    TodoList.selectedProject = Storage.projects.find(el => el.name === name);
   }
 
   static deselectProject() {

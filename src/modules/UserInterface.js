@@ -1,4 +1,5 @@
-import { parseISO, isToday, isThisWeek } from 'date-fns'
+import { parseISO, isToday, isThisWeek } from 'date-fns';
+import Storage from './Storage';
 import TodoList from './TodoList';
 
 export default class UserInterface {
@@ -9,8 +10,16 @@ export default class UserInterface {
   static currentPage = this.inbox
   static todoBeingEdited = null
   static projectBeingEdited = null
+
+  static addTodoButton = document.querySelector('.add-todo-button');
   
   static {
+    if (window.localStorage.getItem("todos")) {
+      Storage.loadData();
+      this.updateTodosList();
+      this.updateProjectsList();
+    }
+
     this.handleSelectInboxEvent();
     this.handleSelectTodayEvent();
     this.handleSelectThisWeekEvent();
@@ -25,6 +34,7 @@ export default class UserInterface {
     this.inbox.addEventListener('click', e => {
       this.currentPage = this.inbox;
       TodoList.selectedProject = null;
+      this.addTodoButton.style.display = 'flex';
       this.updateTodosList();
       this.highlightCurrentPage();  
     });
@@ -33,6 +43,7 @@ export default class UserInterface {
   static handleSelectTodayEvent() {
     this.today.addEventListener('click', e => {
       this.currentPage = this.today;
+      this.addTodoButton.style.display = 'none';
       TodoList.selectedProject = null;
       this.updateTodosList();
       this.highlightCurrentPage();  
@@ -43,15 +54,14 @@ export default class UserInterface {
     this.thisWeek.addEventListener('click', e => {
       this.currentPage = this.thisWeek;
       TodoList.selectedProject = null;
+      this.addTodoButton.style.display = 'none';
       this.updateTodosList();
       this.highlightCurrentPage();  
     });
   }
   
   static handleAddTodoButton() {
-    const addTodoButton = document.querySelector('.add-todo-button');
-
-    addTodoButton.addEventListener('click', e => {
+    this.addTodoButton.addEventListener('click', e => {
       const button = document.querySelector('.todo-form button');
       button.textContent = 'Add Todo';
 
@@ -97,6 +107,7 @@ export default class UserInterface {
       this.toggleProjectForm();
       this.clearProjectForm();
       this.updateProjectsList();
+      Storage.populateStorage();
     });
   }
 
@@ -127,6 +138,7 @@ export default class UserInterface {
       this.toggleTodoForm();
       this.clearTodoForm();
       this.updateTodosList();
+      Storage.populateStorage();
     });
   }
 
@@ -211,9 +223,9 @@ export default class UserInterface {
     
     let selectedTodos = [];
 
-    selectedTodos = selectedTodos.concat(TodoList.todos);
+    selectedTodos = selectedTodos.concat(Storage.todos);
 
-    TodoList.projects.forEach(project => {
+    Storage.projects.forEach(project => {
       selectedTodos = selectedTodos.concat(project.todos);
     });
 
@@ -224,7 +236,7 @@ export default class UserInterface {
     } else if (TodoList.selectedProject) {
       selectedTodos = TodoList.selectedProject.todos;
     } else {
-      selectedTodos = TodoList.todos;
+      selectedTodos = Storage.todos;
     }
 
     selectedTodos.forEach(todo => {
@@ -248,8 +260,8 @@ export default class UserInterface {
         e.stopPropagation();
       });
 
-      const addTodoButton = document.querySelector('.add-todo-button');
-      todosList.insertBefore(todoCard, addTodoButton);
+      
+      todosList.insertBefore(todoCard, this.addTodoButton);
     });
   }
 
@@ -310,11 +322,12 @@ export default class UserInterface {
       projectsList.removeChild(div);
     })
 
-    TodoList.projects.forEach(project => {
+    Storage.projects.forEach(project => {
       const projectDiv = this.createProjectDiv(project);
 
       projectDiv.addEventListener('click', e => {
         this.currentPage = projectDiv;
+        this.addTodoButton.style.display = 'flex';
         TodoList.selectedProject = project;
         this.updateTodosList();
         this.highlightCurrentPage();  

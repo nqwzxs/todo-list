@@ -1,3 +1,4 @@
+import { parseISO, isToday, isThisWeek } from 'date-fns'
 import TodoList from './TodoList';
 
 export default class UserInterface {
@@ -12,6 +13,7 @@ export default class UserInterface {
   static {
     this.handleSelectInboxEvent();
     this.handleSelectTodayEvent();
+    this.handleSelectThisWeekEvent();
     this.handleAddTodoButton();
     this.handleAddProjectButton();
     this.handleTodoFormEvent();
@@ -31,6 +33,15 @@ export default class UserInterface {
   static handleSelectTodayEvent() {
     this.today.addEventListener('click', e => {
       this.currentPage = this.today;
+      TodoList.selectedProject = null;
+      this.updateTodosList();
+      this.highlightCurrentPage();  
+    });
+  }
+
+  static handleSelectThisWeekEvent() {
+    this.thisWeek.addEventListener('click', e => {
+      this.currentPage = this.thisWeek;
       TodoList.selectedProject = null;
       this.updateTodosList();
       this.highlightCurrentPage();  
@@ -200,17 +211,16 @@ export default class UserInterface {
     
     let selectedTodos = [];
 
+    selectedTodos = selectedTodos.concat(TodoList.todos);
+
+    TodoList.projects.forEach(project => {
+      selectedTodos = selectedTodos.concat(project.todos);
+    });
+
     if (this.currentPage === this.today) {
-      selectedTodos = selectedTodos.concat(TodoList.todos);
-
-      TodoList.projects.forEach(project => {
-        selectedTodos = selectedTodos.concat(project.todos);
-      });
-
-      const todayDate = new Date();
-      const todayString = todayDate.toISOString().slice(0, 10);
-
-      selectedTodos = selectedTodos.filter(todo => todo.dueDate === todayString);
+      selectedTodos = selectedTodos.filter(todo => isToday(parseISO(todo.dueDate)));
+    } else if (this.currentPage === this.thisWeek) {
+      selectedTodos = selectedTodos.filter(todo => isThisWeek(parseISO(todo.dueDate)));
     } else if (TodoList.selectedProject) {
       selectedTodos = TodoList.selectedProject.todos;
     } else {
